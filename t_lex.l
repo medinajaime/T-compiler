@@ -7,6 +7,7 @@
 
 ID  [A-Za-z][A-Za-z0-9]*
 DIG [0-9][0-9]*
+INUM {DIG}
 RNUM {DIG}"."{DIG}
 NQUO [^"]
 
@@ -32,20 +33,31 @@ REAL		{return lREAL;}
 "/"		    {return lDIVIDE;}
 ">"		    {return lGT;}
 "<"		    {return lLT;}
-":="		{return lASSIGN;}
+":="		{return lASSIGN;}t_lex.l t_parse.y
 "=="		{return lEQU;}
 "!="		{return lNEQ;}
 ">="		{return lGE;}
 "<="		{return lLE;}
 
 // Identifiers, Integer numbers, Real numbers
+{ID}          {return lID;}
+{INUM}        {return lINUM;}
+{RNUM}        {return lRNUM;}
 
-\"{NQUO}*\"	{sscanf(yytext,"%s", qstr); return lQSTR;}
-"/*"		{ BEGIN(C_COMMENT); }
-<C_COMMENT>"*/"	{ BEGIN(INITIAL); }
-<C_COMMENT>\n	{ }
-<C_COMMENT>.	{ }
-[ \t\n]		{}
+
+
+
+
+
+
+
+
+\"{NQUO}*\" 	    {sscanf(yytext,"%s", qstr); return lQSTR;}
+"/*"		        { BEGIN(C_COMMENT); }
+<C_COMMENT>"*/"	    { BEGIN(INITIAL); }
+<C_COMMENT>\n	    { }
+<C_COMMENT>.	    { }
+[ \t\n]		        {}
 .		{}
 
 %%
@@ -107,6 +119,5 @@ void print_lex( int t ) {
     case lQSTR: printf("QSTR(%s)\n", qstr);
         break;
     default: printf("******** lexical error!!!");
-    }
-}
+/ Integer or Real numbers}/ Integer or Real / Integer or Real numbers/ Integer or Real numbersmbers
 
