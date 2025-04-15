@@ -33,7 +33,7 @@ REAL		{return lREAL;}
 "/"		    {return lDIVIDE;}
 ">"		    {return lGT;}
 "<"		    {return lLT;}
-":="		{return lASSIGN;}t_lex.l t_parse.y
+":="		{return lASSIGN;}
 "=="		{return lEQU;}
 "!="		{return lNEQ;}
 ">="		{return lGE;}
