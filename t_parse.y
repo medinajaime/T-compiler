@@ -63,6 +63,34 @@ oformal	:	lCOMMA formal oformal
 
 // Statements and Expressions
 
+block : lBEGIN stmtList lEND
+	{ printf("Block -> BEGIN Statement+ END\n");}
+
+stmtList : stmt stmtList 
+		{printf("StatementList -> Statement StatementList\n");}
+		| stmt 
+		{printf("StatementList -> Statement\n");}
+		;
+
+stmt :  block
+		{printf("Statement -> Block\n");}
+		| localVarDecl
+		{printf("Statement -> LocalVarDecl\n");}
+		| assignStmt
+		{printf("Statement -> AssignStmt\n");}
+		| returnStmt
+		{printf("Statement -> ReturnStmt\n");}
+		| ifStmt
+		{printf("Statement -> IfStmt\n");}
+		| writeStmt
+		{printf("Statement -> WriteStmt\n");}
+		| readStmt
+		{printf("Statement -> ReadStmt\n");}
+		;
+
+localVarDecl : type lID lSEMI 
+		{printf("LocalVarDecl -> Type Id ")}
+
 %%
 
 int yyerror(char *s)
