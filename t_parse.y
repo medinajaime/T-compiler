@@ -89,7 +89,26 @@ stmt :  block
 		;
 
 localVarDecl : type lID lSEMI 
-		{printf("LocalVarDecl -> Type Id ")}
+			{printf("LocalVarDecl -> Type Id SEMI\n");}
+			| type assignStmt 
+			{printf("LocalVarDecl -> Type AssignStmt\n");}
+			;
+
+assignStmt : lID lASSIGN expr lSEMI
+			{printf("AssignStmt -> ID ASSIGN Expression SEMI\n");}
+			;
+
+returnStmt : lRETURN expr lSEMI
+			{printf("ReturnStmt -> RETURN Expression SEMI\n");}
+			;
+
+ifStmt : lIF lLP boolExpr lRP stmt
+			{printf("IfStmt -> IF LP BoolExpr RP Statement\n");}
+			| lif lLP boolExpr lRP stmt lELSE stmt
+			{printf("IfStmt -> IF LP BoolExpre RP Statement ELSE Statement\n");}
+			;
+
+
 
 %%
 
