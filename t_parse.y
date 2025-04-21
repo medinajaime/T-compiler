@@ -116,51 +116,51 @@ readStmt : lREAD lLP lID lCOMMA lQSTR lRP lSEMI
 			{printf("ReadStmt -> READ LP ID COMMA QSTR RP SEMI\n");}
 			;
 
-Expression : MultiplicativeExpr
+expr : multExpr
         	{ printf("Expression -> MultiplicativeExpr\n"); }
-			| Expression lADD MultiplicativeExpr
+			| expr lADD multExpr
         	{ printf("Expression -> Expression + MultiplicativeExpr\n"); }
-    		| Expression lMINUS MultiplicativeExpr
+    		| expr lMINUS multExpr
         	{ printf("Expression -> Expression - MultiplicativeExpr\n"); }
     		;
 
-MultiplicativeExpr : PrimaryExpr
+multExpr : primaryExpr
         	{ printf("MultiplicativeExpr -> PrimaryExpr\n"); }
-    		| MultiplicativeExpr lTIMES PrimaryExpr
+    		| multExpr lTIMES primaryExpr
         	{ printf("MultiplicativeExpr -> MultiplicativeExpr * PrimaryExpr\n"); }
-    		| MultiplicativeExpr lDIVIDE PrimaryExpr
+    		| multExpr lDIVIDE primaryExpr
         	{ printf("MultiplicativeExpr -> MultiplicativeExpr / PrimaryExpr\n"); }
     		;
 
-PrimaryExpr : lINUM
+primaryExpr : lINUM
         	{ printf("PrimaryExpr -> INUM\n"); }
     		| lRNUM
         	{ printf("PrimaryExpr -> RNUM\n"); }
     		| lID
         	{ printf("PrimaryExpr -> ID\n"); }
-    		| lLP Expression lRP
+    		| lLP expr lRP
         	{ printf("PrimaryExpr -> ( Expression )\n"); }
-    		| lID lLP ActualParams lRP
+    		| lID lLP actualParams lRP
         	{ printf("PrimaryExpr -> ID ( ActualParams )\n"); }
     		;
 
-BoolExpr : Expression lEQU Expression
+boolExpr : expr lEQU expr
         	{ printf("BoolExpr -> Expression == Expression\n"); }
-    		| Expression lNEQ Expression
+    		| expr lNEQ expr
         	{ printf("BoolExpr -> Expression != Expression\n"); }
-    		| Expression lGT Expression
+    		| expr lGT expr
         	{ printf("BoolExpr -> Expression > Expression\n"); }
-    		| Expression lGE Expression
+    		| expr lGE expr
         	{ printf("BoolExpr -> Expression >= Expression\n"); }
-    		| Expression lLT Expression
+    		| expr lLT expr
         	{ printf("BoolExpr -> Expression < Expression\n"); }
-    		| Expression lLE Expression
+    		| expr lLE expr
         	{ printf("BoolExpr -> Expression <= Expression\n"); }
     		;
 
-ActualParams : Expression  lCOMMA ActualParams
+actualParams : expr  lCOMMA actualParams
 			{printf("ActualParams ->Expression  lCOMMA ActualParams\n");}
-			| Expression
+			| expr
 			{printf("ActualParams ->Expression\n");}
 			;
 
