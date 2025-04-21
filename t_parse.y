@@ -108,7 +108,12 @@ ifStmt : lIF lLP boolExpr lRP stmt
 			{printf("IfStmt -> IF LP BoolExpre RP Statement ELSE Statement\n");}
 			;
 
+writeStmt : lWrite lLP expr lCOMMA lQSTR lRP lSEMI
+			{printf("WriteStmt -> WRITE LP Expression COMMA QSTR RP SEMI\n");}
+			;
 
+readStmt : lREAD lLP lID lCOMMA lQSTR lRP lSEMI
+			{printf("ReadStmt -> READ LP ID COMMA QSTR RP SEMI\n");}
 
 %%
 
