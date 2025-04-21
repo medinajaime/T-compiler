@@ -62,6 +62,7 @@ oformal	:	lCOMMA formal oformal
 	;
 
 // Statements and Expressions
+// Statements:
 
 block : lBEGIN stmtList lEND
 	{ printf("Block -> BEGIN Statement+ END\n");}
@@ -104,17 +105,19 @@ returnStmt : lRETURN expr lSEMI
 
 ifStmt : lIF lLP boolExpr lRP stmt
 			{printf("IfStmt -> IF LP BoolExpr RP Statement\n");}
-			| lif lLP boolExpr lRP stmt lELSE stmt
+			| lIF lLP boolExpr lRP stmt lELSE stmt
 			{printf("IfStmt -> IF LP BoolExpre RP Statement ELSE Statement\n");}
 			;
 
-writeStmt : lWrite lLP expr lCOMMA lQSTR lRP lSEMI
+writeStmt : lWRITE lLP expr lCOMMA lQSTR lRP lSEMI
 			{printf("WriteStmt -> WRITE LP Expression COMMA QSTR RP SEMI\n");}
 			;
 
 readStmt : lREAD lLP lID lCOMMA lQSTR lRP lSEMI
 			{printf("ReadStmt -> READ LP ID COMMA QSTR RP SEMI\n");}
 			;
+
+//Expressions:
 
 expr : multExpr
         	{ printf("Expression -> MultiplicativeExpr\n"); }

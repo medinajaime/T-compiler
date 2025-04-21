@@ -39,7 +39,8 @@ REAL		{return lREAL;}
 ">="		{return lGE;}
 "<="		{return lLE;}
 
-// Identifiers, Integer numbers, Real numbers
+    /* Identifiers, Integer numbers, Read numbers */
+
 {ID}          {return lID;}
 {INUM}        {return lINUM;}
 {RNUM}        {return lRNUM;}
@@ -119,5 +120,5 @@ void print_lex( int t ) {
     case lQSTR: printf("QSTR(%s)\n", qstr);
         break;
     default: printf("******** lexical error!!!");
-/ Integer or Real numbers}/ Integer or Real / Integer or Real numbers/ Integer or Real numbersmbers
-
+    }
+}
