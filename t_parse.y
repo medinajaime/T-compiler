@@ -114,6 +114,56 @@ writeStmt : lWrite lLP expr lCOMMA lQSTR lRP lSEMI
 
 readStmt : lREAD lLP lID lCOMMA lQSTR lRP lSEMI
 			{printf("ReadStmt -> READ LP ID COMMA QSTR RP SEMI\n");}
+			;
+
+Expression : MultiplicativeExpr
+        	{ printf("Expression -> MultiplicativeExpr\n"); }
+			| Expression lADD MultiplicativeExpr
+        	{ printf("Expression -> Expression + MultiplicativeExpr\n"); }
+    		| Expression lMINUS MultiplicativeExpr
+        	{ printf("Expression -> Expression - MultiplicativeExpr\n"); }
+    		;
+
+MultiplicativeExpr : PrimaryExpr
+        	{ printf("MultiplicativeExpr -> PrimaryExpr\n"); }
+    		| MultiplicativeExpr lTIMES PrimaryExpr
+        	{ printf("MultiplicativeExpr -> MultiplicativeExpr * PrimaryExpr\n"); }
+    		| MultiplicativeExpr lDIVIDE PrimaryExpr
+        	{ printf("MultiplicativeExpr -> MultiplicativeExpr / PrimaryExpr\n"); }
+    		;
+
+PrimaryExpr : lINUM
+        	{ printf("PrimaryExpr -> INUM\n"); }
+    		| lRNUM
+        	{ printf("PrimaryExpr -> RNUM\n"); }
+    		| lID
+        	{ printf("PrimaryExpr -> ID\n"); }
+    		| lLP Expression lRP
+        	{ printf("PrimaryExpr -> ( Expression )\n"); }
+    		| lID lLP ActualParams lRP
+        	{ printf("PrimaryExpr -> ID ( ActualParams )\n"); }
+    		;
+
+BoolExpr : Expression lEQU Expression
+        	{ printf("BoolExpr -> Expression == Expression\n"); }
+    		| Expression lNEQ Expression
+        	{ printf("BoolExpr -> Expression != Expression\n"); }
+    		| Expression lGT Expression
+        	{ printf("BoolExpr -> Expression > Expression\n"); }
+    		| Expression lGE Expression
+        	{ printf("BoolExpr -> Expression >= Expression\n"); }
+    		| Expression lLT Expression
+        	{ printf("BoolExpr -> Expression < Expression\n"); }
+    		| Expression lLE Expression
+        	{ printf("BoolExpr -> Expression <= Expression\n"); }
+    		;
+
+ActualParams : Expression  lCOMMA ActualParams
+			{printf("ActualParams ->Expression  lCOMMA ActualParams\n");}
+			| Expression
+			{printf("ActualParams ->Expression\n");}
+			;
+
 
 %%
 
