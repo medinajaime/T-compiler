@@ -106,7 +106,7 @@ returnStmt : lRETURN expr lSEMI
 ifStmt : lIF lLP boolExpr lRP stmt
 			{printf("IfStmt -> IF LP BoolExpr RP Statement\n");}
 			| lIF lLP boolExpr lRP stmt lELSE stmt
-			{printf("IfStmt -> IF LP BoolExpre RP Statement ELSE Statement\n");}
+			{printf("IfStmt -> IF LP BoolExpr RP Statement ELSE Statement\n");}
 			;
 
 writeStmt : lWRITE lLP expr lCOMMA lQSTR lRP lSEMI
