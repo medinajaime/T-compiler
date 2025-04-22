@@ -1,0 +1,90 @@
+Type -> INT
+Type -> INT
+Formal -> Type ID
+Type -> INT
+Formal -> Type ID
+OtherFormals -> 
+OtherFormals -> COMMA Formal OtherFormals
+Formals -> Formal OtherFormals
+Type -> INT
+LocalVarDecl -> Type Id SEMI
+Statement -> LocalVarDecl
+PrimaryExpr -> ID
+MultiplicativeExpr -> PrimaryExpr
+PrimaryExpr -> ID
+MultiplicativeExpr -> MultiplicativeExpr * PrimaryExpr
+Expression -> MultiplicativeExpr
+PrimaryExpr -> ID
+MultiplicativeExpr -> PrimaryExpr
+PrimaryExpr -> ID
+MultiplicativeExpr -> MultiplicativeExpr * PrimaryExpr
+Expression -> Expression - MultiplicativeExpr
+AssignStmt -> ID ASSIGN Expression SEMI
+Statement -> AssignStmt
+PrimaryExpr -> ID
+MultiplicativeExpr -> PrimaryExpr
+Expression -> MultiplicativeExpr
+ReturnStmt -> RETURN Expression SEMI
+Statement -> ReturnStmt
+StatementList -> Statement
+StatementList -> Statement StatementList
+StatementList -> Statement StatementList
+Block -> BEGIN Statement+ END
+MethodDecl -> Type ID LP Formals RP Block
+Type -> INT
+Formals -> 
+Type -> INT
+LocalVarDecl -> Type Id SEMI
+Statement -> LocalVarDecl
+ReadStmt -> READ LP ID COMMA QSTR RP SEMI
+Statement -> ReadStmt
+Type -> INT
+LocalVarDecl -> Type Id SEMI
+Statement -> LocalVarDecl
+ReadStmt -> READ LP ID COMMA QSTR RP SEMI
+Statement -> ReadStmt
+Type -> INT
+LocalVarDecl -> Type Id SEMI
+Statement -> LocalVarDecl
+PrimaryExpr -> ID
+MultiplicativeExpr -> PrimaryExpr
+Expression -> MultiplicativeExpr
+PrimaryExpr -> ID
+MultiplicativeExpr -> PrimaryExpr
+Expression -> MultiplicativeExpr
+ActualParams ->Expression
+ActualParams ->Expression  lCOMMA ActualParams
+PrimaryExpr -> ID ( ActualParams )
+MultiplicativeExpr -> PrimaryExpr
+Expression -> MultiplicativeExpr
+PrimaryExpr -> ID
+MultiplicativeExpr -> PrimaryExpr
+Expression -> MultiplicativeExpr
+PrimaryExpr -> ID
+MultiplicativeExpr -> PrimaryExpr
+Expression -> MultiplicativeExpr
+ActualParams ->Expression
+ActualParams ->Expression  lCOMMA ActualParams
+PrimaryExpr -> ID ( ActualParams )
+MultiplicativeExpr -> PrimaryExpr
+Expression -> Expression + MultiplicativeExpr
+AssignStmt -> ID ASSIGN Expression SEMI
+Statement -> AssignStmt
+PrimaryExpr -> ID
+MultiplicativeExpr -> PrimaryExpr
+Expression -> MultiplicativeExpr
+WriteStmt -> WRITE LP Expression COMMA QSTR RP SEMI
+Statement -> WriteStmt
+StatementList -> Statement
+StatementList -> Statement StatementList
+StatementList -> Statement StatementList
+StatementList -> Statement StatementList
+StatementList -> Statement StatementList
+StatementList -> Statement StatementList
+StatementList -> Statement StatementList
+Block -> BEGIN Statement+ END
+MethodDecl -> Type MAIN ID LP Formals RP Block
+MethodDecls -> MethodDecl
+MethodDecls -> MethodDecl MethodDecls
+Program -> MethodDecls
+Parsed OK! //NEED 110 lines
