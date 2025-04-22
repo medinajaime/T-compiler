@@ -144,19 +144,24 @@ enum yysymbol_kind_t
   YYSYMBOL_formal = 39,                    /* formal  */
   YYSYMBOL_oformal = 40,                   /* oformal  */
   YYSYMBOL_block = 41,                     /* block  */
-  YYSYMBOL_stmtList = 42,                  /* stmtList  */
+  YYSYMBOL_stmt_list = 42,                 /* stmt_list  */
   YYSYMBOL_stmt = 43,                      /* stmt  */
-  YYSYMBOL_localVarDecl = 44,              /* localVarDecl  */
-  YYSYMBOL_assignStmt = 45,                /* assignStmt  */
-  YYSYMBOL_returnStmt = 46,                /* returnStmt  */
-  YYSYMBOL_ifStmt = 47,                    /* ifStmt  */
-  YYSYMBOL_writeStmt = 48,                 /* writeStmt  */
-  YYSYMBOL_readStmt = 49,                  /* readStmt  */
+  YYSYMBOL_localvar = 44,                  /* localvar  */
+  YYSYMBOL_assign = 45,                    /* assign  */
+  YYSYMBOL_ret = 46,                       /* ret  */
+  YYSYMBOL_ifstmt = 47,                    /* ifstmt  */
+  YYSYMBOL_writestmt = 48,                 /* writestmt  */
+  YYSYMBOL_readstmt = 49,                  /* readstmt  */
   YYSYMBOL_expr = 50,                      /* expr  */
-  YYSYMBOL_multExpr = 51,                  /* multExpr  */
-  YYSYMBOL_primaryExpr = 52,               /* primaryExpr  */
-  YYSYMBOL_boolExpr = 53,                  /* boolExpr  */
-  YYSYMBOL_actualParams = 54               /* actualParams  */
+  YYSYMBOL_term = 51,                      /* term  */
+  YYSYMBOL_factor = 52,                    /* factor  */
+  YYSYMBOL_boolexpr = 53,                  /* boolexpr  */
+  YYSYMBOL_actuals = 54,                   /* actuals  */
+  YYSYMBOL_moreactuals = 55,               /* moreactuals  */
+  YYSYMBOL_identifier = 56,                /* identifier  */
+  YYSYMBOL_inum = 57,                      /* inum  */
+  YYSYMBOL_rnum = 58,                      /* rnum  */
+  YYSYMBOL_qstr = 59                       /* qstr  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -484,16 +489,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  7
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   110
+#define YYLAST   108
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  33
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  22
+#define YYNNTS  27
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  51
+#define YYNRULES  57
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  106
+#define YYNSTATES  112
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   287
@@ -545,12 +550,12 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    23,    23,    27,    30,    32,    36,    38,    42,    44,
-      48,    51,    54,    58,    61,    67,    70,    72,    76,    78,
-      80,    82,    84,    86,    88,    92,    94,    98,   102,   106,
-     108,   112,   116,   122,   124,   126,   130,   132,   134,   138,
-     140,   142,   144,   146,   150,   152,   154,   156,   158,   160,
-     164,   166
+       0,    25,    25,    28,    32,    34,    39,    41,    46,    48,
+      53,    56,    60,    65,    68,    72,    77,    79,    84,    86,
+      88,    90,    92,    94,    96,   101,   103,   108,   113,   118,
+     120,   125,   130,   135,   137,   139,   144,   146,   148,   153,
+     155,   157,   159,   161,   166,   168,   170,   172,   174,   176,
+     181,   184,   188,   191,   195,   200,   205,   210
 };
 #endif
 
@@ -571,10 +576,10 @@ static const char *const yytname[] =
   "lLT", "lGE", "lLE", "lADD", "lMINUS", "lTIMES", "lDIVIDE", "lLP", "lRP",
   "lINT", "lREAL", "lSTRING", "lELSE", "lMAIN", "lSEMI", "lCOMMA", "lID",
   "lINUM", "lRNUM", "lQSTR", "$accept", "prog", "mthdcls", "type",
-  "mthdcl", "formals", "formal", "oformal", "block", "stmtList", "stmt",
-  "localVarDecl", "assignStmt", "returnStmt", "ifStmt", "writeStmt",
-  "readStmt", "expr", "multExpr", "primaryExpr", "boolExpr",
-  "actualParams", YY_NULLPTR
+  "mthdcl", "formals", "formal", "oformal", "block", "stmt_list", "stmt",
+  "localvar", "assign", "ret", "ifstmt", "writestmt", "readstmt", "expr",
+  "term", "factor", "boolexpr", "actuals", "moreactuals", "identifier",
+  "inum", "rnum", "qstr", YY_NULLPTR
 };
 
 static const char *
@@ -584,7 +589,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-76)
+#define YYPACT_NINF (-78)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -598,17 +603,18 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      14,   -76,   -76,    31,   -76,   -12,    14,   -76,    10,    15,
-     -76,    22,    14,    14,    35,    53,    47,    55,   -76,    69,
-      14,   -76,    69,    -2,   -76,    47,   -76,    58,    59,    60,
-      20,    75,    54,   -76,    73,    -2,   -76,   -76,   -76,   -76,
-     -76,   -76,   -76,    20,    56,    20,    20,    64,   -76,   -76,
-      -8,    48,   -76,    20,     1,   -76,   -76,   -76,    -6,    61,
-      44,    65,    17,    20,    20,    20,   -76,    20,    20,    36,
-     -76,    62,    63,    20,    20,    20,    20,    20,    20,    -2,
-     -76,    13,    66,    48,    48,   -76,   -76,   -76,    67,    70,
-      52,    52,    52,    52,    52,    52,    68,    20,   -76,    71,
-      72,    -2,   -76,   -76,   -76,   -76
+      27,   -78,   -78,     2,   -78,    14,    27,   -78,   -23,     0,
+     -78,    43,    27,    27,    40,    -6,    55,    11,   -78,   -78,
+      76,    27,   -78,    76,    19,   -78,    55,   -78,    65,    66,
+      67,    24,    40,   -78,    79,    19,   -78,   -78,   -78,   -78,
+     -78,   -78,    83,   -78,    24,    40,    24,    24,   -78,   -78,
+      30,    46,   -78,    70,   -78,   -78,   -78,     3,   -78,   -78,
+      24,    -9,    68,    63,    72,    -5,    24,    24,   -78,    24,
+      24,    24,   -78,    45,    59,    59,    24,    24,    24,    24,
+      24,    24,    19,   -78,    46,    46,   -78,   -78,    -3,    73,
+     -78,   -78,    74,    77,    50,    50,    50,    50,    50,    50,
+      75,    24,   -78,   -78,    78,    80,    19,    -3,   -78,   -78,
+     -78,   -78
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -617,32 +623,33 @@ static const yytype_int8 yypact[] =
 static const yytype_int8 yydefact[] =
 {
        3,     6,     7,     0,     2,     0,     5,     1,     0,     0,
-       4,     0,    11,    11,     0,     0,    14,     0,    12,     0,
-       0,    10,     0,     0,     9,    14,     8,     0,     0,     0,
+       4,     0,    11,    11,     0,     0,    14,     0,    54,    12,
+       0,     0,    10,     0,     0,     9,    14,     8,     0,     0,
        0,     0,     0,    18,     0,    17,    19,    20,    21,    22,
-      23,    24,    13,     0,     0,     0,     0,    41,    39,    40,
-       0,    33,    36,     0,     0,    26,    15,    16,     0,     0,
-       0,     0,     0,     0,     0,     0,    28,     0,     0,     0,
-      25,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-      42,    51,     0,    34,    35,    37,    38,    27,     0,     0,
-      44,    45,    46,    48,    47,    49,    29,     0,    43,     0,
-       0,     0,    50,    31,    32,    30
+      23,    24,     0,    13,     0,     0,     0,     0,    55,    56,
+       0,    35,    38,    41,    39,    40,    26,     0,    15,    16,
+       0,     0,     0,     0,     0,     0,     0,     0,    28,     0,
+       0,    51,    25,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,    42,    33,    34,    36,    37,    53,     0,
+      27,    57,     0,     0,    44,    45,    46,    48,    47,    49,
+      30,     0,    50,    43,     0,     0,     0,    53,    31,    32,
+      29,    52
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -76,   -76,    84,    12,   -76,    79,    76,    77,    43,    74,
-     -75,   -76,    78,   -76,   -76,   -76,   -76,   -30,     6,     5,
-     -76,     0
+     -78,   -78,    91,    39,   -78,    86,    81,    82,    36,    69,
+     -77,   -78,    71,   -78,   -78,   -78,   -78,   -43,     4,    12,
+     -78,   -78,    -1,   -14,   -78,   -78,    26
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     3,     4,    32,     6,    15,    16,    21,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,    81,    51,    52,
-      61,    82
+       0,     3,     4,    32,     6,    15,    16,    22,    33,    34,
+      35,    36,    37,    38,    39,    40,    41,    50,    51,    52,
+      64,    89,   102,    53,    54,    55,    92
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -650,34 +657,32 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      50,    27,    28,    29,    96,    30,    23,    53,    64,    65,
-      64,    65,     5,    58,     8,    60,    62,     9,     5,    66,
-       1,     2,    71,    69,    14,    14,   105,    31,    70,    64,
-      65,     7,    14,    64,    65,    12,     1,     2,    80,    11,
-      46,    97,    13,    90,    91,    92,    93,    94,    95,    47,
-      48,    49,    64,    65,    73,    74,    75,    76,    77,    78,
-      64,    65,    24,    87,    18,    26,    67,    68,    64,    65,
-      83,    84,    85,    86,    19,    20,    22,    23,    43,    44,
-      45,    53,    56,    54,    63,    59,    79,    98,    99,    72,
-      10,   100,    17,   101,    88,    89,    25,   102,   103,   104,
-       0,     0,    42,     0,     0,     0,     0,     0,     0,    57,
-      55
+      19,    61,     7,    63,    65,   100,    11,    66,    67,    60,
+      42,    66,    67,    66,    67,    20,    83,    73,    57,    74,
+      12,    42,    28,    29,    30,   101,    31,    24,    88,   110,
+      72,    62,    23,    94,    95,    96,    97,    98,    99,     5,
+       8,     1,     2,     9,    47,     5,    66,    67,    18,     1,
+       2,    14,    14,    18,    48,    49,    25,    68,   107,    27,
+      14,    66,    67,    13,    69,    70,    66,    67,    42,    18,
+      84,    85,    90,    76,    77,    78,    79,    80,    81,    66,
+      67,    86,    87,    21,    24,    44,    45,    46,    58,    60,
+      71,    91,    42,    82,   103,   104,    75,    10,   105,    17,
+     106,    93,    26,    56,    59,   108,   111,   109,    43
 };
 
 static const yytype_int8 yycheck[] =
 {
-      30,     3,     4,     5,    79,     7,     8,     6,    16,    17,
-      16,    17,     0,    43,    26,    45,    46,    29,     6,    27,
-      22,    23,    28,    53,    12,    13,   101,    29,    27,    16,
-      17,     0,    20,    16,    17,    20,    22,    23,    21,    29,
-      20,    28,    20,    73,    74,    75,    76,    77,    78,    29,
-      30,    31,    16,    17,    10,    11,    12,    13,    14,    15,
-      16,    17,    19,    27,    29,    22,    18,    19,    16,    17,
-      64,    65,    67,    68,    21,    28,    21,     8,    20,    20,
-      20,     6,     9,    29,    20,    29,    21,    21,    21,    28,
-       6,    21,    13,    25,    32,    32,    20,    97,    27,    27,
-      -1,    -1,    25,    -1,    -1,    -1,    -1,    -1,    -1,    35,
-      32
+      14,    44,     0,    46,    47,    82,    29,    16,    17,     6,
+      24,    16,    17,    16,    17,    21,    21,    60,    32,    28,
+      20,    35,     3,     4,     5,    28,     7,     8,    71,   106,
+      27,    45,    21,    76,    77,    78,    79,    80,    81,     0,
+      26,    22,    23,    29,    20,     6,    16,    17,    29,    22,
+      23,    12,    13,    29,    30,    31,    20,    27,   101,    23,
+      21,    16,    17,    20,    18,    19,    16,    17,    82,    29,
+      66,    67,    27,    10,    11,    12,    13,    14,    15,    16,
+      17,    69,    70,    28,     8,    20,    20,    20,     9,     6,
+      20,    32,   106,    21,    21,    21,    28,     6,    21,    13,
+      25,    75,    21,    32,    35,    27,   107,    27,    26
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -685,16 +690,17 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,    22,    23,    34,    35,    36,    37,     0,    26,    29,
-      35,    29,    20,    20,    36,    38,    39,    38,    29,    21,
-      28,    40,    21,     8,    41,    39,    41,     3,     4,     5,
-       7,    29,    36,    41,    42,    43,    44,    45,    46,    47,
-      48,    49,    40,    20,    20,    20,    20,    29,    30,    31,
-      50,    51,    52,     6,    29,    45,     9,    42,    50,    29,
-      50,    53,    50,    20,    16,    17,    27,    18,    19,    50,
-      27,    28,    28,    10,    11,    12,    13,    14,    15,    21,
-      21,    50,    54,    51,    51,    52,    52,    27,    32,    32,
-      50,    50,    50,    50,    50,    50,    43,    28,    21,    21,
-      21,    25,    54,    27,    27,    43
+      35,    29,    20,    20,    36,    38,    39,    38,    29,    56,
+      21,    28,    40,    21,     8,    41,    39,    41,     3,     4,
+       5,     7,    36,    41,    42,    43,    44,    45,    46,    47,
+      48,    49,    56,    40,    20,    20,    20,    20,    30,    31,
+      50,    51,    52,    56,    57,    58,    45,    56,     9,    42,
+       6,    50,    56,    50,    53,    50,    16,    17,    27,    18,
+      19,    20,    27,    50,    28,    28,    10,    11,    12,    13,
+      14,    15,    21,    21,    51,    51,    52,    52,    50,    54,
+      27,    32,    59,    59,    50,    50,    50,    50,    50,    50,
+      43,    28,    55,    21,    21,    21,    25,    50,    27,    27,
+      43,    55
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -705,7 +711,7 @@ static const yytype_int8 yyr1[] =
       43,    43,    43,    43,    43,    44,    44,    45,    46,    47,
       47,    48,    49,    50,    50,    50,    51,    51,    51,    52,
       52,    52,    52,    52,    53,    53,    53,    53,    53,    53,
-      54,    54
+      54,    54,    55,    55,    56,    57,    58,    59
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -713,10 +719,10 @@ static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     0,     2,     1,     1,     1,     7,     6,
        2,     0,     2,     3,     0,     3,     2,     1,     1,     1,
-       1,     1,     1,     1,     1,     3,     2,     4,     3,     5,
-       7,     7,     7,     1,     3,     3,     1,     3,     3,     1,
+       1,     1,     1,     1,     1,     3,     2,     4,     3,     7,
+       5,     7,     7,     3,     3,     1,     3,     3,     1,     1,
        1,     1,     3,     4,     3,     3,     3,     3,     3,     3,
-       3,     1
+       2,     0,     3,     0,     1,     1,     1,     1
 };
 
 
@@ -1180,308 +1186,343 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* prog: mthdcls  */
-#line 24 "t_parse.y"
-                { printf("Program -> MethodDecls\n");
-		  printf("Parsed OK!\n"); }
-#line 1187 "t_parse.c"
+#line 26 "t_parse.y"
+        { printf("Program -> MethodDecls\nParsed OK!\n"); }
+#line 1192 "t_parse.c"
     break;
 
   case 3: /* prog: %empty  */
-#line 27 "t_parse.y"
-                { printf("****** Parsing failed!\n"); }
-#line 1193 "t_parse.c"
+#line 28 "t_parse.y"
+        { printf("** Parsing failed!\n"); }
+#line 1198 "t_parse.c"
     break;
 
   case 4: /* mthdcls: mthdcl mthdcls  */
-#line 31 "t_parse.y"
-                { printf("MethodDecls -> MethodDecl MethodDecls\n"); }
-#line 1199 "t_parse.c"
+#line 33 "t_parse.y"
+        { printf("MethodDecls -> MethodDecl MethodDecls\n"); }
+#line 1204 "t_parse.c"
     break;
 
   case 5: /* mthdcls: mthdcl  */
-#line 33 "t_parse.y"
-                { printf("MethodDecls -> MethodDecl\n"); }
-#line 1205 "t_parse.c"
+#line 35 "t_parse.y"
+        { printf("MethodDecls -> MethodDecl\n"); }
+#line 1210 "t_parse.c"
     break;
 
   case 6: /* type: lINT  */
-#line 37 "t_parse.y"
-                { printf("Type -> INT\n"); }
-#line 1211 "t_parse.c"
+#line 40 "t_parse.y"
+        { printf("Type -> INT\n"); }
+#line 1216 "t_parse.c"
     break;
 
   case 7: /* type: lREAL  */
-#line 39 "t_parse.y"
-                { printf("Type -> REAL\n"); }
-#line 1217 "t_parse.c"
+#line 42 "t_parse.y"
+        { printf("Type -> REAL\n"); }
+#line 1222 "t_parse.c"
     break;
 
   case 8: /* mthdcl: type lMAIN lID lLP formals lRP block  */
-#line 43 "t_parse.y"
-                { printf("MethodDecl -> Type MAIN ID LP Formals RP Block\n"); }
-#line 1223 "t_parse.c"
+#line 47 "t_parse.y"
+        { printf("MethodDecl -> Type MAIN ID LP Formals RP Block\n"); }
+#line 1228 "t_parse.c"
     break;
 
   case 9: /* mthdcl: type lID lLP formals lRP block  */
-#line 45 "t_parse.y"
-                { printf("MethodDecl -> Type ID LP Formals RP Block\n"); }
-#line 1229 "t_parse.c"
+#line 49 "t_parse.y"
+        { printf("MethodDecl -> Type ID LP Formals RP Block\n"); }
+#line 1234 "t_parse.c"
     break;
 
   case 10: /* formals: formal oformal  */
-#line 49 "t_parse.y"
-                { printf("Formals -> Formal OtherFormals\n"); }
-#line 1235 "t_parse.c"
+#line 54 "t_parse.y"
+        { printf("Formals -> Formal OtherFormals\n"); }
+#line 1240 "t_parse.c"
     break;
 
   case 11: /* formals: %empty  */
-#line 51 "t_parse.y"
-                { printf("Formals -> \n"); }
-#line 1241 "t_parse.c"
+#line 56 "t_parse.y"
+        { printf("Formals -> \n"); }
+#line 1246 "t_parse.c"
     break;
 
-  case 12: /* formal: type lID  */
-#line 55 "t_parse.y"
-                { printf("Formal -> Type ID\n"); }
-#line 1247 "t_parse.c"
+  case 12: /* formal: type identifier  */
+#line 61 "t_parse.y"
+        { printf("Formal -> Type ID\n"); }
+#line 1252 "t_parse.c"
     break;
 
   case 13: /* oformal: lCOMMA formal oformal  */
-#line 59 "t_parse.y"
-                { printf("OtherFormals -> COMMA Formal OtherFormals\n"); }
-#line 1253 "t_parse.c"
+#line 66 "t_parse.y"
+        { printf("OtherFormals -> COMMA Formal OtherFormals\n"); }
+#line 1258 "t_parse.c"
     break;
 
   case 14: /* oformal: %empty  */
-#line 61 "t_parse.y"
-                { printf("OtherFormals -> \n"); }
-#line 1259 "t_parse.c"
-    break;
-
-  case 15: /* block: lBEGIN stmtList lEND  */
 #line 68 "t_parse.y"
-        { printf("Block -> BEGIN Statement+ END\n");}
-#line 1265 "t_parse.c"
+        { printf("OtherFormals -> \n"); }
+#line 1264 "t_parse.c"
     break;
 
-  case 16: /* stmtList: stmt stmtList  */
-#line 71 "t_parse.y"
-                {printf("StatementList -> Statement StatementList\n");}
-#line 1271 "t_parse.c"
-    break;
-
-  case 17: /* stmtList: stmt  */
+  case 15: /* block: lBEGIN stmt_list lEND  */
 #line 73 "t_parse.y"
-                {printf("StatementList -> Statement\n");}
-#line 1277 "t_parse.c"
+        { printf("Block -> BEGIN StatementList END\n"); }
+#line 1270 "t_parse.c"
+    break;
+
+  case 16: /* stmt_list: stmt stmt_list  */
+#line 78 "t_parse.y"
+        { printf("StatementList -> Statement StatementList\n"); }
+#line 1276 "t_parse.c"
+    break;
+
+  case 17: /* stmt_list: stmt  */
+#line 80 "t_parse.y"
+        { printf("StatementList -> Statement\n"); }
+#line 1282 "t_parse.c"
     break;
 
   case 18: /* stmt: block  */
-#line 77 "t_parse.y"
-                {printf("Statement -> Block\n");}
-#line 1283 "t_parse.c"
-    break;
-
-  case 19: /* stmt: localVarDecl  */
-#line 79 "t_parse.y"
-                {printf("Statement -> LocalVarDecl\n");}
-#line 1289 "t_parse.c"
-    break;
-
-  case 20: /* stmt: assignStmt  */
-#line 81 "t_parse.y"
-                {printf("Statement -> AssignStmt\n");}
-#line 1295 "t_parse.c"
-    break;
-
-  case 21: /* stmt: returnStmt  */
-#line 83 "t_parse.y"
-                {printf("Statement -> ReturnStmt\n");}
-#line 1301 "t_parse.c"
-    break;
-
-  case 22: /* stmt: ifStmt  */
 #line 85 "t_parse.y"
-                {printf("Statement -> IfStmt\n");}
-#line 1307 "t_parse.c"
+        { printf("Statement -> Block\n"); }
+#line 1288 "t_parse.c"
     break;
 
-  case 23: /* stmt: writeStmt  */
+  case 19: /* stmt: localvar  */
 #line 87 "t_parse.y"
-                {printf("Statement -> WriteStmt\n");}
-#line 1313 "t_parse.c"
+        { printf("Statement -> LocalVarDecl\n"); }
+#line 1294 "t_parse.c"
     break;
 
-  case 24: /* stmt: readStmt  */
+  case 20: /* stmt: assign  */
 #line 89 "t_parse.y"
-                {printf("Statement -> ReadStmt\n");}
-#line 1319 "t_parse.c"
+        { printf("Statement -> AssignStmt\n"); }
+#line 1300 "t_parse.c"
     break;
 
-  case 25: /* localVarDecl: type lID lSEMI  */
+  case 21: /* stmt: ret  */
+#line 91 "t_parse.y"
+        { printf("Statement -> ReturnStmt\n"); }
+#line 1306 "t_parse.c"
+    break;
+
+  case 22: /* stmt: ifstmt  */
 #line 93 "t_parse.y"
-                        {printf("LocalVarDecl -> Type Id SEMI\n");}
-#line 1325 "t_parse.c"
+        { printf("Statement -> IfStmt\n"); }
+#line 1312 "t_parse.c"
     break;
 
-  case 26: /* localVarDecl: type assignStmt  */
+  case 23: /* stmt: writestmt  */
 #line 95 "t_parse.y"
-                        {printf("LocalVarDecl -> Type AssignStmt\n");}
-#line 1331 "t_parse.c"
+        { printf("Statement -> WriteStmt\n"); }
+#line 1318 "t_parse.c"
     break;
 
-  case 27: /* assignStmt: lID lASSIGN expr lSEMI  */
-#line 99 "t_parse.y"
-                        {printf("AssignStmt -> ID ASSIGN Expression SEMI\n");}
-#line 1337 "t_parse.c"
+  case 24: /* stmt: readstmt  */
+#line 97 "t_parse.y"
+        { printf("Statement -> ReadStmt\n"); }
+#line 1324 "t_parse.c"
     break;
 
-  case 28: /* returnStmt: lRETURN expr lSEMI  */
-#line 103 "t_parse.y"
-                        {printf("ReturnStmt -> RETURN Expression SEMI\n");}
-#line 1343 "t_parse.c"
+  case 25: /* localvar: type identifier lSEMI  */
+#line 102 "t_parse.y"
+        { printf("LocalVarDecl -> Type ID SEMI\n"); }
+#line 1330 "t_parse.c"
     break;
 
-  case 29: /* ifStmt: lIF lLP boolExpr lRP stmt  */
-#line 107 "t_parse.y"
-                        {printf("IfStmt -> IF LP BoolExpr RP Statement\n");}
-#line 1349 "t_parse.c"
+  case 26: /* localvar: type assign  */
+#line 104 "t_parse.y"
+        { printf("LocalVarDecl -> Type AssignStmt\n"); }
+#line 1336 "t_parse.c"
     break;
 
-  case 30: /* ifStmt: lIF lLP boolExpr lRP stmt lELSE stmt  */
+  case 27: /* assign: identifier lASSIGN expr lSEMI  */
 #line 109 "t_parse.y"
-                        {printf("IfStmt -> IF LP BoolExpre RP Statement ELSE Statement\n");}
-#line 1355 "t_parse.c"
+        { printf("AssignStmt -> ID := Expression SEMI\n"); }
+#line 1342 "t_parse.c"
     break;
 
-  case 31: /* writeStmt: lWRITE lLP expr lCOMMA lQSTR lRP lSEMI  */
-#line 113 "t_parse.y"
-                        {printf("WriteStmt -> WRITE LP Expression COMMA QSTR RP SEMI\n");}
-#line 1361 "t_parse.c"
+  case 28: /* ret: lRETURN expr lSEMI  */
+#line 114 "t_parse.y"
+        { printf("ReturnStmt -> RETURN Expression SEMI\n"); }
+#line 1348 "t_parse.c"
     break;
 
-  case 32: /* readStmt: lREAD lLP lID lCOMMA lQSTR lRP lSEMI  */
-#line 117 "t_parse.y"
-                        {printf("ReadStmt -> READ LP ID COMMA QSTR RP SEMI\n");}
-#line 1367 "t_parse.c"
+  case 29: /* ifstmt: lIF lLP boolexpr lRP stmt lELSE stmt  */
+#line 119 "t_parse.y"
+        { printf("IfStmt -> IF ( BoolExpr ) Statement ELSE Statement\n"); }
+#line 1354 "t_parse.c"
     break;
 
-  case 33: /* expr: multExpr  */
-#line 123 "t_parse.y"
-                { printf("Expression -> MultiplicativeExpr\n"); }
-#line 1373 "t_parse.c"
+  case 30: /* ifstmt: lIF lLP boolexpr lRP stmt  */
+#line 121 "t_parse.y"
+        { printf("IfStmt -> IF ( BoolExpr ) Statement\n"); }
+#line 1360 "t_parse.c"
     break;
 
-  case 34: /* expr: expr lADD multExpr  */
-#line 125 "t_parse.y"
-                { printf("Expression -> Expression + MultiplicativeExpr\n"); }
-#line 1379 "t_parse.c"
+  case 31: /* writestmt: lWRITE lLP expr lCOMMA qstr lRP lSEMI  */
+#line 126 "t_parse.y"
+        { printf("WriteStmt -> WRITE ( Expression , QString ) ;\n"); }
+#line 1366 "t_parse.c"
     break;
 
-  case 35: /* expr: expr lMINUS multExpr  */
-#line 127 "t_parse.y"
-                { printf("Expression -> Expression - MultiplicativeExpr\n"); }
-#line 1385 "t_parse.c"
-    break;
-
-  case 36: /* multExpr: primaryExpr  */
+  case 32: /* readstmt: lREAD lLP identifier lCOMMA qstr lRP lSEMI  */
 #line 131 "t_parse.y"
-                { printf("MultiplicativeExpr -> PrimaryExpr\n"); }
-#line 1391 "t_parse.c"
+        { printf("ReadStmt -> READ ( ID , QString ) ;\n"); }
+#line 1372 "t_parse.c"
     break;
 
-  case 37: /* multExpr: multExpr lTIMES primaryExpr  */
-#line 133 "t_parse.y"
-                { printf("MultiplicativeExpr -> MultiplicativeExpr * PrimaryExpr\n"); }
-#line 1397 "t_parse.c"
+  case 33: /* expr: expr lADD term  */
+#line 136 "t_parse.y"
+        { printf("Expression -> Expression + Term\n"); }
+#line 1378 "t_parse.c"
     break;
 
-  case 38: /* multExpr: multExpr lDIVIDE primaryExpr  */
-#line 135 "t_parse.y"
-                { printf("MultiplicativeExpr -> MultiplicativeExpr / PrimaryExpr\n"); }
-#line 1403 "t_parse.c"
+  case 34: /* expr: expr lMINUS term  */
+#line 138 "t_parse.y"
+        { printf("Expression -> Expression - Term\n"); }
+#line 1384 "t_parse.c"
     break;
 
-  case 39: /* primaryExpr: lINUM  */
-#line 139 "t_parse.y"
-                { printf("PrimaryExpr -> INUM\n"); }
-#line 1409 "t_parse.c"
+  case 35: /* expr: term  */
+#line 140 "t_parse.y"
+        { printf("Expression -> Term\n"); }
+#line 1390 "t_parse.c"
     break;
 
-  case 40: /* primaryExpr: lRNUM  */
-#line 141 "t_parse.y"
-                { printf("PrimaryExpr -> RNUM\n"); }
-#line 1415 "t_parse.c"
-    break;
-
-  case 41: /* primaryExpr: lID  */
-#line 143 "t_parse.y"
-                { printf("PrimaryExpr -> ID\n"); }
-#line 1421 "t_parse.c"
-    break;
-
-  case 42: /* primaryExpr: lLP expr lRP  */
+  case 36: /* term: term lTIMES factor  */
 #line 145 "t_parse.y"
-                { printf("PrimaryExpr -> ( Expression )\n"); }
-#line 1427 "t_parse.c"
+        { printf("Term -> Term * Factor\n"); }
+#line 1396 "t_parse.c"
     break;
 
-  case 43: /* primaryExpr: lID lLP actualParams lRP  */
+  case 37: /* term: term lDIVIDE factor  */
 #line 147 "t_parse.y"
-                { printf("PrimaryExpr -> ID ( ActualParams )\n"); }
-#line 1433 "t_parse.c"
+        { printf("Term -> Term / Factor\n"); }
+#line 1402 "t_parse.c"
     break;
 
-  case 44: /* boolExpr: expr lEQU expr  */
-#line 151 "t_parse.y"
-                { printf("BoolExpr -> Expression == Expression\n"); }
-#line 1439 "t_parse.c"
+  case 38: /* term: factor  */
+#line 149 "t_parse.y"
+        { printf("Term -> Factor\n"); }
+#line 1408 "t_parse.c"
     break;
 
-  case 45: /* boolExpr: expr lNEQ expr  */
-#line 153 "t_parse.y"
-                { printf("BoolExpr -> Expression != Expression\n"); }
-#line 1445 "t_parse.c"
+  case 39: /* factor: inum  */
+#line 154 "t_parse.y"
+        { printf("Factor -> INUM\n"); }
+#line 1414 "t_parse.c"
     break;
 
-  case 46: /* boolExpr: expr lGT expr  */
-#line 155 "t_parse.y"
-                { printf("BoolExpr -> Expression > Expression\n"); }
-#line 1451 "t_parse.c"
+  case 40: /* factor: rnum  */
+#line 156 "t_parse.y"
+        { printf("Factor -> RNUM\n"); }
+#line 1420 "t_parse.c"
     break;
 
-  case 47: /* boolExpr: expr lGE expr  */
-#line 157 "t_parse.y"
-                { printf("BoolExpr -> Expression >= Expression\n"); }
-#line 1457 "t_parse.c"
+  case 41: /* factor: identifier  */
+#line 158 "t_parse.y"
+        { printf("Factor -> ID\n"); }
+#line 1426 "t_parse.c"
     break;
 
-  case 48: /* boolExpr: expr lLT expr  */
-#line 159 "t_parse.y"
-                { printf("BoolExpr -> Expression < Expression\n"); }
-#line 1463 "t_parse.c"
+  case 42: /* factor: lLP expr lRP  */
+#line 160 "t_parse.y"
+        { printf("Factor -> ( Expression )\n"); }
+#line 1432 "t_parse.c"
     break;
 
-  case 49: /* boolExpr: expr lLE expr  */
-#line 161 "t_parse.y"
-                { printf("BoolExpr -> Expression <= Expression\n"); }
-#line 1469 "t_parse.c"
+  case 43: /* factor: identifier lLP actuals lRP  */
+#line 162 "t_parse.y"
+        { printf("Factor -> ID ( ActualParams )\n"); }
+#line 1438 "t_parse.c"
     break;
 
-  case 50: /* actualParams: expr lCOMMA actualParams  */
-#line 165 "t_parse.y"
-                        {printf("ActualParams ->Expression  lCOMMA ActualParams\n");}
-#line 1475 "t_parse.c"
-    break;
-
-  case 51: /* actualParams: expr  */
+  case 44: /* boolexpr: expr lEQU expr  */
 #line 167 "t_parse.y"
-                        {printf("ActualParams ->Expression\n");}
-#line 1481 "t_parse.c"
+        { printf("BoolExpr -> Expression == Expression\n"); }
+#line 1444 "t_parse.c"
+    break;
+
+  case 45: /* boolexpr: expr lNEQ expr  */
+#line 169 "t_parse.y"
+        { printf("BoolExpr -> Expression != Expression\n"); }
+#line 1450 "t_parse.c"
+    break;
+
+  case 46: /* boolexpr: expr lGT expr  */
+#line 171 "t_parse.y"
+        { printf("BoolExpr -> Expression > Expression\n"); }
+#line 1456 "t_parse.c"
+    break;
+
+  case 47: /* boolexpr: expr lGE expr  */
+#line 173 "t_parse.y"
+        { printf("BoolExpr -> Expression >= Expression\n"); }
+#line 1462 "t_parse.c"
+    break;
+
+  case 48: /* boolexpr: expr lLT expr  */
+#line 175 "t_parse.y"
+        { printf("BoolExpr -> Expression < Expression\n"); }
+#line 1468 "t_parse.c"
+    break;
+
+  case 49: /* boolexpr: expr lLE expr  */
+#line 177 "t_parse.y"
+        { printf("BoolExpr -> Expression <= Expression\n"); }
+#line 1474 "t_parse.c"
+    break;
+
+  case 50: /* actuals: expr moreactuals  */
+#line 182 "t_parse.y"
+        { printf("ActualParams -> Expression OtherParams\n"); }
+#line 1480 "t_parse.c"
+    break;
+
+  case 51: /* actuals: %empty  */
+#line 184 "t_parse.y"
+        { printf("ActualParams -> \n"); }
+#line 1486 "t_parse.c"
+    break;
+
+  case 52: /* moreactuals: lCOMMA expr moreactuals  */
+#line 189 "t_parse.y"
+        { printf("OtherParams -> , Expression OtherParams\n"); }
+#line 1492 "t_parse.c"
+    break;
+
+  case 53: /* moreactuals: %empty  */
+#line 191 "t_parse.y"
+        { printf("OtherParams -> \n"); }
+#line 1498 "t_parse.c"
+    break;
+
+  case 54: /* identifier: lID  */
+#line 196 "t_parse.y"
+        { printf("ID\n"); }
+#line 1504 "t_parse.c"
+    break;
+
+  case 55: /* inum: lINUM  */
+#line 201 "t_parse.y"
+        { printf("INUM\n"); }
+#line 1510 "t_parse.c"
+    break;
+
+  case 56: /* rnum: lRNUM  */
+#line 206 "t_parse.y"
+        { printf("RNUM\n"); }
+#line 1516 "t_parse.c"
+    break;
+
+  case 57: /* qstr: lQSTR  */
+#line 211 "t_parse.y"
+        { printf("QString\n"); }
+#line 1522 "t_parse.c"
     break;
 
 
-#line 1485 "t_parse.c"
+#line 1526 "t_parse.c"
 
       default: break;
     }
@@ -1674,12 +1715,11 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 171 "t_parse.y"
+#line 214 "t_parse.y"
 
 
 int yyerror(char *s)
 {
-	printf("%s\n",s);
-	return 1;
+    printf("%s\n", s);
+    return 1;
 }
-

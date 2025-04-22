@@ -1,79 +1,106 @@
 Type -> INT
 Type -> INT
+ID
 Formal -> Type ID
 Type -> INT
+ID
 Formal -> Type ID
 OtherFormals -> 
 OtherFormals -> COMMA Formal OtherFormals
 Formals -> Formal OtherFormals
 Type -> INT
-LocalVarDecl -> Type Id SEMI
+ID
+LocalVarDecl -> Type ID SEMI
 Statement -> LocalVarDecl
-PrimaryExpr -> ID
-MultiplicativeExpr -> PrimaryExpr
-PrimaryExpr -> ID
-MultiplicativeExpr -> MultiplicativeExpr * PrimaryExpr
-Expression -> MultiplicativeExpr
-PrimaryExpr -> ID
-MultiplicativeExpr -> PrimaryExpr
-PrimaryExpr -> ID
-MultiplicativeExpr -> MultiplicativeExpr * PrimaryExpr
-Expression -> Expression - MultiplicativeExpr
-AssignStmt -> ID ASSIGN Expression SEMI
+ID
+ID
+Factor -> ID
+Term -> Factor
+ID
+Factor -> ID
+Term -> Term * Factor
+Expression -> Term
+ID
+Factor -> ID
+Term -> Factor
+ID
+Factor -> ID
+Term -> Term * Factor
+Expression -> Expression - Term
+AssignStmt -> ID := Expression SEMI
 Statement -> AssignStmt
-PrimaryExpr -> ID
-MultiplicativeExpr -> PrimaryExpr
-Expression -> MultiplicativeExpr
+ID
+Factor -> ID
+Term -> Factor
+Expression -> Term
 ReturnStmt -> RETURN Expression SEMI
 Statement -> ReturnStmt
 StatementList -> Statement
 StatementList -> Statement StatementList
 StatementList -> Statement StatementList
-Block -> BEGIN Statement+ END
+Block -> BEGIN StatementList END
 MethodDecl -> Type ID LP Formals RP Block
 Type -> INT
 Formals -> 
 Type -> INT
-LocalVarDecl -> Type Id SEMI
+ID
+LocalVarDecl -> Type ID SEMI
 Statement -> LocalVarDecl
-ReadStmt -> READ LP ID COMMA QSTR RP SEMI
+ID
+QString
+ReadStmt -> READ ( ID , QString ) ;
 Statement -> ReadStmt
 Type -> INT
-LocalVarDecl -> Type Id SEMI
+ID
+LocalVarDecl -> Type ID SEMI
 Statement -> LocalVarDecl
-ReadStmt -> READ LP ID COMMA QSTR RP SEMI
+ID
+QString
+ReadStmt -> READ ( ID , QString ) ;
 Statement -> ReadStmt
 Type -> INT
-LocalVarDecl -> Type Id SEMI
+ID
+LocalVarDecl -> Type ID SEMI
 Statement -> LocalVarDecl
-PrimaryExpr -> ID
-MultiplicativeExpr -> PrimaryExpr
-Expression -> MultiplicativeExpr
-PrimaryExpr -> ID
-MultiplicativeExpr -> PrimaryExpr
-Expression -> MultiplicativeExpr
-ActualParams ->Expression
-ActualParams ->Expression  lCOMMA ActualParams
-PrimaryExpr -> ID ( ActualParams )
-MultiplicativeExpr -> PrimaryExpr
-Expression -> MultiplicativeExpr
-PrimaryExpr -> ID
-MultiplicativeExpr -> PrimaryExpr
-Expression -> MultiplicativeExpr
-PrimaryExpr -> ID
-MultiplicativeExpr -> PrimaryExpr
-Expression -> MultiplicativeExpr
-ActualParams ->Expression
-ActualParams ->Expression  lCOMMA ActualParams
-PrimaryExpr -> ID ( ActualParams )
-MultiplicativeExpr -> PrimaryExpr
-Expression -> Expression + MultiplicativeExpr
-AssignStmt -> ID ASSIGN Expression SEMI
+ID
+ID
+ID
+Factor -> ID
+Term -> Factor
+Expression -> Term
+ID
+Factor -> ID
+Term -> Factor
+Expression -> Term
+OtherParams -> 
+OtherParams -> , Expression OtherParams
+ActualParams -> Expression OtherParams
+Factor -> ID ( ActualParams )
+Term -> Factor
+Expression -> Term
+ID
+ID
+Factor -> ID
+Term -> Factor
+Expression -> Term
+ID
+Factor -> ID
+Term -> Factor
+Expression -> Term
+OtherParams -> 
+OtherParams -> , Expression OtherParams
+ActualParams -> Expression OtherParams
+Factor -> ID ( ActualParams )
+Term -> Factor
+Expression -> Expression + Term
+AssignStmt -> ID := Expression SEMI
 Statement -> AssignStmt
-PrimaryExpr -> ID
-MultiplicativeExpr -> PrimaryExpr
-Expression -> MultiplicativeExpr
-WriteStmt -> WRITE LP Expression COMMA QSTR RP SEMI
+ID
+Factor -> ID
+Term -> Factor
+Expression -> Term
+QString
+WriteStmt -> WRITE ( Expression , QString ) ;
 Statement -> WriteStmt
 StatementList -> Statement
 StatementList -> Statement StatementList
@@ -82,9 +109,9 @@ StatementList -> Statement StatementList
 StatementList -> Statement StatementList
 StatementList -> Statement StatementList
 StatementList -> Statement StatementList
-Block -> BEGIN Statement+ END
+Block -> BEGIN StatementList END
 MethodDecl -> Type MAIN ID LP Formals RP Block
 MethodDecls -> MethodDecl
 MethodDecls -> MethodDecl MethodDecls
 Program -> MethodDecls
-Parsed OK! //NEED 110 lines
+Parsed OK!

@@ -20,159 +20,201 @@
 %expect 1
 
 %%
-prog	:	mthdcls
-		{ printf("Program -> MethodDecls\n");
-		  printf("Parsed OK!\n"); }
-	|
-		{ printf("****** Parsing failed!\n"); }	
-	;
 
-mthdcls	:	mthdcl mthdcls
-		{ printf("MethodDecls -> MethodDecl MethodDecls\n"); }	
-	|	mthdcl
-		{ printf("MethodDecls -> MethodDecl\n"); }	
-	;
+prog
+    : mthdcls
+        { printf("Program -> MethodDecls\nParsed OK!\n"); }
+    |
+        { printf("** Parsing failed!\n"); }
+    ;
 
-type	:	lINT
-		{ printf("Type -> INT\n"); }	
-	|	lREAL
-		{ printf("Type -> REAL\n"); }	
-	;
+mthdcls
+    : mthdcl mthdcls
+        { printf("MethodDecls -> MethodDecl MethodDecls\n"); }
+    | mthdcl
+        { printf("MethodDecls -> MethodDecl\n"); }
+    ;
 
-mthdcl	:	type lMAIN lID lLP formals lRP block
-		{ printf("MethodDecl -> Type MAIN ID LP Formals RP Block\n"); }	
-	|	type lID lLP formals lRP block
-		{ printf("MethodDecl -> Type ID LP Formals RP Block\n"); }	
-	;
+type
+    : lINT
+        { printf("Type -> INT\n"); }
+    | lREAL
+        { printf("Type -> REAL\n"); }
+    ;
 
-formals	:	formal oformal
-		{ printf("Formals -> Formal OtherFormals\n"); }	
-	|
-		{ printf("Formals -> \n"); }	
-	;
+mthdcl
+    : type lMAIN lID lLP formals lRP block
+        { printf("MethodDecl -> Type MAIN ID LP Formals RP Block\n"); }
+    | type lID lLP formals lRP block
+        { printf("MethodDecl -> Type ID LP Formals RP Block\n"); }
+    ;
 
-formal	:	type lID
-		{ printf("Formal -> Type ID\n"); }	
-	;
+formals
+    : formal oformal
+        { printf("Formals -> Formal OtherFormals\n"); }
+    |
+        { printf("Formals -> \n"); }
+    ;
 
-oformal	:	lCOMMA formal oformal
-		{ printf("OtherFormals -> COMMA Formal OtherFormals\n"); }	
-	|
-		{ printf("OtherFormals -> \n"); }	
-	;
+formal
+    : type identifier
+        { printf("Formal -> Type ID\n"); }
+    ;
 
-// Statements and Expressions
-// Statements:
+oformal
+    : lCOMMA formal oformal
+        { printf("OtherFormals -> COMMA Formal OtherFormals\n"); }
+    |
+        { printf("OtherFormals -> \n"); }
+    ;
 
-block : lBEGIN stmtList lEND
-	{ printf("Block -> BEGIN Statement+ END\n");}
+block
+    : lBEGIN stmt_list lEND
+        { printf("Block -> BEGIN StatementList END\n"); }
+    ;
 
-stmtList : stmt stmtList 
-		{printf("StatementList -> Statement StatementList\n");}
-		| stmt 
-		{printf("StatementList -> Statement\n");}
-		;
+stmt_list
+    : stmt stmt_list
+        { printf("StatementList -> Statement StatementList\n"); }
+    | stmt
+        { printf("StatementList -> Statement\n"); }
+    ;
 
-stmt :  block
-		{printf("Statement -> Block\n");}
-		| localVarDecl
-		{printf("Statement -> LocalVarDecl\n");}
-		| assignStmt
-		{printf("Statement -> AssignStmt\n");}
-		| returnStmt
-		{printf("Statement -> ReturnStmt\n");}
-		| ifStmt
-		{printf("Statement -> IfStmt\n");}
-		| writeStmt
-		{printf("Statement -> WriteStmt\n");}
-		| readStmt
-		{printf("Statement -> ReadStmt\n");}
-		;
+stmt
+    : block
+        { printf("Statement -> Block\n"); }
+    | localvar
+        { printf("Statement -> LocalVarDecl\n"); }
+    | assign
+        { printf("Statement -> AssignStmt\n"); }
+    | ret
+        { printf("Statement -> ReturnStmt\n"); }
+    | ifstmt
+        { printf("Statement -> IfStmt\n"); }
+    | writestmt
+        { printf("Statement -> WriteStmt\n"); }
+    | readstmt
+        { printf("Statement -> ReadStmt\n"); }
+    ;
 
-localVarDecl : type lID lSEMI 
-			{printf("LocalVarDecl -> Type Id SEMI\n");}
-			| type assignStmt 
-			{printf("LocalVarDecl -> Type AssignStmt\n");}
-			;
+localvar
+    : type identifier lSEMI
+        { printf("LocalVarDecl -> Type ID SEMI\n"); }
+    | type assign
+        { printf("LocalVarDecl -> Type AssignStmt\n"); }
+    ;
 
-assignStmt : lID lASSIGN expr lSEMI
-			{printf("AssignStmt -> ID ASSIGN Expression SEMI\n");}
-			;
+assign
+    : identifier lASSIGN expr lSEMI
+        { printf("AssignStmt -> ID := Expression SEMI\n"); }
+    ;
 
-returnStmt : lRETURN expr lSEMI
-			{printf("ReturnStmt -> RETURN Expression SEMI\n");}
-			;
+ret
+    : lRETURN expr lSEMI
+        { printf("ReturnStmt -> RETURN Expression SEMI\n"); }
+    ;
 
-ifStmt : lIF lLP boolExpr lRP stmt
-			{printf("IfStmt -> IF LP BoolExpr RP Statement\n");}
-			| lIF lLP boolExpr lRP stmt lELSE stmt
-			{printf("IfStmt -> IF LP BoolExpr RP Statement ELSE Statement\n");}
-			;
+ifstmt
+    : lIF lLP boolexpr lRP stmt lELSE stmt
+        { printf("IfStmt -> IF ( BoolExpr ) Statement ELSE Statement\n"); }
+    | lIF lLP boolexpr lRP stmt
+        { printf("IfStmt -> IF ( BoolExpr ) Statement\n"); }
+    ;
 
-writeStmt : lWRITE lLP expr lCOMMA lQSTR lRP lSEMI
-			{printf("WriteStmt -> WRITE LP Expression COMMA QSTR RP SEMI\n");}
-			;
+writestmt
+    : lWRITE lLP expr lCOMMA qstr lRP lSEMI
+        { printf("WriteStmt -> WRITE ( Expression , QString ) ;\n"); }
+    ;
 
-readStmt : lREAD lLP lID lCOMMA lQSTR lRP lSEMI
-			{printf("ReadStmt -> READ LP ID COMMA QSTR RP SEMI\n");}
-			;
+readstmt
+    : lREAD lLP identifier lCOMMA qstr lRP lSEMI
+        { printf("ReadStmt -> READ ( ID , QString ) ;\n"); }
+    ;
 
-//Expressions:
+expr
+    : expr lADD term
+        { printf("Expression -> Expression + Term\n"); }
+    | expr lMINUS term
+        { printf("Expression -> Expression - Term\n"); }
+    | term
+        { printf("Expression -> Term\n"); }
+    ;
 
-expr : multExpr
-        	{ printf("Expression -> MultiplicativeExpr\n"); }
-			| expr lADD multExpr
-        	{ printf("Expression -> Expression + MultiplicativeExpr\n"); }
-    		| expr lMINUS multExpr
-        	{ printf("Expression -> Expression - MultiplicativeExpr\n"); }
-    		;
+term
+    : term lTIMES factor
+        { printf("Term -> Term * Factor\n"); }
+    | term lDIVIDE factor
+        { printf("Term -> Term / Factor\n"); }
+    | factor
+        { printf("Term -> Factor\n"); }
+    ;
 
-multExpr : primaryExpr
-        	{ printf("MultiplicativeExpr -> PrimaryExpr\n"); }
-    		| multExpr lTIMES primaryExpr
-        	{ printf("MultiplicativeExpr -> MultiplicativeExpr * PrimaryExpr\n"); }
-    		| multExpr lDIVIDE primaryExpr
-        	{ printf("MultiplicativeExpr -> MultiplicativeExpr / PrimaryExpr\n"); }
-    		;
+factor
+    : inum
+        { printf("Factor -> INUM\n"); }
+    | rnum
+        { printf("Factor -> RNUM\n"); }
+    | identifier
+        { printf("Factor -> ID\n"); }
+    | lLP expr lRP
+        { printf("Factor -> ( Expression )\n"); }
+    | identifier lLP actuals lRP
+        { printf("Factor -> ID ( ActualParams )\n"); }
+    ;
 
-primaryExpr : lINUM
-        	{ printf("PrimaryExpr -> INUM\n"); }
-    		| lRNUM
-        	{ printf("PrimaryExpr -> RNUM\n"); }
-    		| lID
-        	{ printf("PrimaryExpr -> ID\n"); }
-    		| lLP expr lRP
-        	{ printf("PrimaryExpr -> ( Expression )\n"); }
-    		| lID lLP actualParams lRP
-        	{ printf("PrimaryExpr -> ID ( ActualParams )\n"); }
-    		;
+boolexpr
+    : expr lEQU expr
+        { printf("BoolExpr -> Expression == Expression\n"); }
+    | expr lNEQ expr
+        { printf("BoolExpr -> Expression != Expression\n"); }
+    | expr lGT expr
+        { printf("BoolExpr -> Expression > Expression\n"); }
+    | expr lGE expr
+        { printf("BoolExpr -> Expression >= Expression\n"); }
+    | expr lLT expr
+        { printf("BoolExpr -> Expression < Expression\n"); }
+    | expr lLE expr
+        { printf("BoolExpr -> Expression <= Expression\n"); }
+    ;
 
-boolExpr : expr lEQU expr
-        	{ printf("BoolExpr -> Expression == Expression\n"); }
-    		| expr lNEQ expr
-        	{ printf("BoolExpr -> Expression != Expression\n"); }
-    		| expr lGT expr
-        	{ printf("BoolExpr -> Expression > Expression\n"); }
-    		| expr lGE expr
-        	{ printf("BoolExpr -> Expression >= Expression\n"); }
-    		| expr lLT expr
-        	{ printf("BoolExpr -> Expression < Expression\n"); }
-    		| expr lLE expr
-        	{ printf("BoolExpr -> Expression <= Expression\n"); }
-    		;
+actuals
+    : expr moreactuals
+        { printf("ActualParams -> Expression OtherParams\n"); }
+    |
+        { printf("ActualParams -> \n"); }
+    ;
 
-actualParams : expr  lCOMMA actualParams
-			{printf("ActualParams ->Expression  lCOMMA ActualParams\n");}
-			| expr
-			{printf("ActualParams ->Expression\n");}
-			;
+moreactuals
+    : lCOMMA expr moreactuals
+        { printf("OtherParams -> , Expression OtherParams\n"); }
+    |
+        { printf("OtherParams -> \n"); }
+    ;
 
+identifier
+    : lID
+        { printf("ID\n"); }
+    ;
+
+inum
+    : lINUM
+        { printf("INUM\n"); }
+    ;
+
+rnum
+    : lRNUM
+        { printf("RNUM\n"); }
+    ;
+
+qstr
+    : lQSTR
+        { printf("QString\n"); }
+    ;
 
 %%
 
 int yyerror(char *s)
 {
-	printf("%s\n",s);
-	return 1;
+    printf("%s\n", s);
+    return 1;
 }
-
